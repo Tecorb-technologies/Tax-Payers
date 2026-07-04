@@ -6,6 +6,8 @@ across areas and projects, lets citizens drill into individual projects
 for asking questions about a project — using a provider/API key the user
 supplies themselves (bring-your-own-key; nothing is stored server-side).
 
+![Tax-Payers dashboard](docs/images/tax_payers.png)
+
 ## Stack
 
 - **Frontend** (`/frontend`) — React (JavaScript) + Vite, Tailwind CSS,
