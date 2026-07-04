@@ -45,9 +45,16 @@ const REGISTRY = {
     requiresApiKey: false,
     defaultModel: 'llama3',
   },
+  ollamaCloud: {
+    key: 'ollamaCloud',
+    label: 'Ollama Cloud',
+    requiresApiKey: true,
+    baseUrl: 'https://ollama.com/v1',
+    defaultModel: 'gpt-oss:120b-cloud',
+  },
 };
 
-const OPENAI_COMPAT_PROVIDERS = new Set(['openai', 'deepseek', 'glm']);
+const OPENAI_COMPAT_PROVIDERS = new Set(['openai', 'deepseek', 'glm', 'ollamaCloud']);
 
 const VALID_PROVIDER_KEYS = Object.keys(REGISTRY);
 

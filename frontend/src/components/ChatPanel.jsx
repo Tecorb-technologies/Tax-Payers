@@ -21,6 +21,7 @@ const PROVIDER_LABELS = {
   deepseek: "Deepseek",
   glm: "GLM",
   ollama: "Ollama",
+  ollamaCloud: "Ollama Cloud",
 }
 
 const PROJECT_STARTER_PROMPTS = [
