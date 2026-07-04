@@ -51,12 +51,6 @@ export default function Navbar() {
           </span>
         </NavLink>
 
-        <nav aria-label="Primary" className="hidden items-center gap-1 md:flex">
-          {NAV_LINKS.map((link) => (
-            <NavLinkItem key={link.to} {...link} />
-          ))}
-        </nav>
-
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger

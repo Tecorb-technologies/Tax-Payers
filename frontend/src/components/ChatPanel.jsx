@@ -23,11 +23,18 @@ const PROVIDER_LABELS = {
   ollama: "Ollama",
 }
 
-const STARTER_PROMPTS = [
+const PROJECT_STARTER_PROMPTS = [
   "What is this project's status?",
   "How much has been spent so far?",
   "Is this project over budget?",
   "What were the most recent updates?",
+]
+
+const GLOBAL_STARTER_PROMPTS = [
+  "What is the total public budget across all areas?",
+  "Which projects are currently over budget?",
+  "How many projects are in progress right now?",
+  "Which area has the most active projects?",
 ]
 
 function MessageBubble({ role, content }) {
@@ -60,7 +67,9 @@ function MessageBubble({ role, content }) {
  * provider settings from localStorage (see aiSettings.js) fresh on every
  * send, so a mid-session settings change takes effect immediately.
  */
-export default function ChatPanel({ projectId }) {
+export default function ChatPanel({ projectId, title = "Ask about this project" }) {
+  const starterPrompts = projectId ? PROJECT_STARTER_PROMPTS : GLOBAL_STARTER_PROMPTS
+  const subject = projectId ? "this project" : "public spending"
   const [configured, setConfigured] = useState(() => hasAiSettings())
   const [activeSettings, setActiveSettings] = useState(() => getAiSettings())
   const [messages, setMessages] = useState([])
@@ -102,7 +111,7 @@ export default function ChatPanel({ projectId }) {
         provider: current.provider,
         apiKey: current.apiKey,
         model: current.model,
-        projectId: String(projectId),
+        ...(projectId ? { projectId: String(projectId) } : {}),
         messages: nextMessages,
       })
       const reply = response.data?.reply
@@ -133,9 +142,9 @@ export default function ChatPanel({ projectId }) {
     return (
       <div className="rounded-xl border border-dashed border-border p-6 text-center sm:p-8">
         <MessageCircleQuestion className="mx-auto size-6 text-muted-foreground" aria-hidden="true" />
-        <p className="mt-3 font-heading text-base font-medium text-foreground">Ask an AI about this project</p>
+        <p className="mt-3 font-heading text-base font-medium text-foreground">Ask an AI about {subject}</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          Configure an AI provider in Settings to chat about this project.
+          Configure an AI provider in Settings to chat about {subject}.
         </p>
         <Link to="/settings" className={cn(buttonVariants({ variant: "default", size: "sm" }), "mt-4")}>
           Go to Settings
@@ -149,7 +158,7 @@ export default function ChatPanel({ projectId }) {
       {/* Header */}
       <div className="flex items-center justify-between gap-2 border-b border-border px-4 py-3">
         <div className="min-w-0">
-          <p className="text-sm font-medium text-foreground">Ask about this project</p>
+          <p className="text-sm font-medium text-foreground">{title}</p>
           <p className="truncate text-xs text-muted-foreground">
             {PROVIDER_LABELS[activeSettings.provider] || activeSettings.provider} · {activeSettings.model}
           </p>
@@ -170,7 +179,7 @@ export default function ChatPanel({ projectId }) {
           <div className="space-y-2.5">
             <p className="text-sm text-muted-foreground">Try asking:</p>
             <div className="flex flex-wrap gap-1.5">
-              {STARTER_PROMPTS.map((prompt) => (
+              {starterPrompts.map((prompt) => (
                 <button
                   key={prompt}
                   type="button"
@@ -210,14 +219,14 @@ export default function ChatPanel({ projectId }) {
       <form onSubmit={handleSubmit} className="flex items-end gap-2 border-t border-border p-3">
         <div className="flex-1">
           <Label htmlFor="chat-input" className="sr-only">
-            Message about this project
+            Message about {subject}
           </Label>
           <Textarea
             id="chat-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask a question about this project…"
+            placeholder={`Ask a question about ${subject}…`}
             rows={1}
             className="max-h-32 min-h-9 resize-none py-1.5"
           />
