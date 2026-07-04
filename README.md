@@ -80,7 +80,7 @@ Settings page and sent per-request — the backend never stores them.
 
 ## API
 
-All routes are mounted under `/api`.
+All routes are mounted under `/api`. Full reference: [backend/API document/API.md](backend/API%20document/API.md).
 
 | Method | Path | Description |
 |---|---|---|
